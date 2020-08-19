@@ -15,6 +15,7 @@ namespace Unopify.Home
 
         private readonly MVx.Observable.Property<CurrentTrackPlaybackContext> _currentTrackContext;
         private readonly MVx.Observable.Property<string> _imageUri;
+        private readonly MVx.Observable.Property<string> _artistName;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -24,6 +25,7 @@ namespace Unopify.Home
 
             _currentTrackContext = new MVx.Observable.Property<CurrentTrackPlaybackContext>(nameof(CurrentTrackContext), args => PropertyChanged?.Invoke(this, args));
             _imageUri = new MVx.Observable.Property<string>(nameof(ImageUri), args => PropertyChanged?.Invoke(this, args));
+            _artistName = new MVx.Observable.Property<string>(nameof(ArtistName), args => PropertyChanged?.Invoke(this, args));
         }
 
         public IDisposable ShouldSubscrbeToCurrentContextOnActivation()
@@ -55,5 +57,7 @@ namespace Unopify.Home
         public CurrentTrackPlaybackContext CurrentTrackContext => _currentTrackContext.Get();
 
         public string ImageUri => _imageUri.Get();
+
+        public string ArtistName => _artistName.Get();
     }
 }

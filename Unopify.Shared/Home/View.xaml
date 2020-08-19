@@ -27,7 +27,9 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Image Source="{Binding ImageUri}" Stretch="Uniform" />
+                <Border BorderThickness="1" BorderBrush="Black">
+                    <Image Source="{Binding ImageUri}" Stretch="Uniform" />
+                </Border>
                 <TextBlock Grid.Row="1" Text="{Binding Path=CurrentTrackContext.Item.Name}" Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Grid>
         </Grid>

@@ -339,3 +339,4 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 /Unopify.AuthServer/Secrets.Secret.cs
+/Unopify.Shared/Secrets.Secret.cs

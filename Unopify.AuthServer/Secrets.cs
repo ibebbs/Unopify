@@ -39,5 +39,19 @@ namespace Unopify.AuthServer
                 return clientSecret;
             }
         }
+
+        static partial void GetAuthRelayHubUri(ref string authRelayHubUri);
+
+        public static string AuthRelayHubUri
+        {
+            get
+            {
+                string authRelayHubUri = "http://localhost:5000/Hub";
+
+                GetAuthRelayHubUri(ref authRelayHubUri);
+
+                return authRelayHubUri;
+            }
+        }
     }
 }

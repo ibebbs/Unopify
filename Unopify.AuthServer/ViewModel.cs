@@ -106,8 +106,7 @@ namespace Unopify.AuthServer
             _refreshingTokenException = new MVx.Observable.Property<Exception>(nameof(RefreshingTokenException), args => PropertyChanged?.Invoke(this, args));
 
             _connection = new HubConnectionBuilder()
-                //.WithUrl("http://localhost:5000/Hub")
-                .WithUrl("https://unopifyauthrelay20200819113428.azurewebsites.net/Hub")
+                .WithUrl(Secrets.AuthRelayHubUri)
                 .WithAutomaticReconnect()
                 .Build();
         }

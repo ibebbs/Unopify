@@ -49,6 +49,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Navigation\Service.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\Schedulers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\Services.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Secrets.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Secrets.Secret.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Spotify\Facade.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Token\Service.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewLocator.cs" />
