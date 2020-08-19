@@ -19,8 +19,11 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Application\Events\BackPressed.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\Events\Pause.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\Events\Play.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\Events\PlaybackStateChanged.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\Events\TokenReceived.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\IEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\IState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\State\Factory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Application\State\Initializing.cs" />

@@ -21,8 +21,7 @@ namespace Unopify.Token
         public Service()
         {
             _connection = new HubConnectionBuilder()
-                .WithUrl("https://unopifyauthrelay20200819113428.azurewebsites.net/Hub")
-                //.WithUrl("http://localhost:5000/Hub")
+                .WithUrl(Secrets.AuthRelayHubUri)
                 .WithAutomaticReconnect()
                 .Build();
 

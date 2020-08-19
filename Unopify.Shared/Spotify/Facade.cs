@@ -1,6 +1,7 @@
 ﻿using SpotifyApi.NetCore;
 using System;
 using System.Net.Http;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 
@@ -41,9 +42,29 @@ namespace Unopify.Spotify
                 .Replay(1);
         }
 
+        private IDisposable ShouldCallPauseWhenPauseEventReceived()
+        {
+            return _eventBus
+                .GetEvent<Application.Events.Pause>()
+                .WithLatestFrom(_tokenService.Token, (_, token) => token)
+                .Subscribe(token => _playerApi.Pause(accessToken: token));
+        }
+
+        private IDisposable ShouldCallPlayWhenPlayEventReceived()
+        {
+            return _eventBus
+                .GetEvent<Application.Events.Play>()
+                .WithLatestFrom(_tokenService.Token, (_, token) => token)
+                .Subscribe(token => _playerApi.Play(accessToken: token));
+        }
+
         public IDisposable Activate()
         {
-            return _context.Connect();
+            return new CompositeDisposable(
+                ShouldCallPlayWhenPlayEventReceived(),
+                ShouldCallPauseWhenPauseEventReceived(),
+                _context.Connect()
+            );
         }
 
         public IObservable<CurrentPlaybackContext> CurrentPlaybackContext => _context;

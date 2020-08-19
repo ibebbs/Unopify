@@ -9,6 +9,8 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <Image Source="{Binding ImageUri}" Stretch="UniformToFill" Margin="-100"/>
+        <Rectangle Fill="#AAFFFFFF" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
         <Grid Margin="16">
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.2*"/>
@@ -30,7 +32,13 @@
                 <Border BorderThickness="1" BorderBrush="Black">
                     <Image Source="{Binding ImageUri}" Stretch="Uniform" />
                 </Border>
-                <TextBlock Grid.Row="1" Text="{Binding Path=CurrentTrackContext.Item.Name}" Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBlock Grid.Row="1" Text="{Binding Path=CurrentTrackContext.Item.Name}" Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="4"/>
+                <TextBlock Grid.Row="2" Text="{Binding Path=ArtistName}" Style="{StaticResource SubtitleTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="4"/>
+                <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="4">
+                    <Button Content="Previous" Command="{Binding Path=PreviousCommand}" Margin="4" />
+                    <Button Content="Play/Pause" Command="{Binding Path=PlayPauseCommand}" Margin="4" />
+                    <Button Content="Next" Command="{Binding Path=PlayPauseCommand}" Margin="4" />
+                </StackPanel>
             </Grid>
         </Grid>
     </Grid>
