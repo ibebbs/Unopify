@@ -1,15 +1,19 @@
 ﻿using SpotifyApi.NetCore;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Text;
 using System.Windows.Input;
 
 namespace Unopify.Home
 {
+    public enum PlaybackState
+    {
+        Playing,
+        Paused
+    }
+
     public class ViewModel : IViewModel, INotifyPropertyChanged
     {
         private readonly Spotify.IFacade _spotifyFacade;
@@ -21,6 +25,7 @@ namespace Unopify.Home
         private readonly MVx.Observable.Command _playPauseCommand;
         private readonly MVx.Observable.Command _previousCommand;
         private readonly MVx.Observable.Command _nextCommand;
+        private readonly MVx.Observable.Property<PlaybackState> _playbackState;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -35,6 +40,7 @@ namespace Unopify.Home
             _playPauseCommand = new MVx.Observable.Command(true);
             _previousCommand = new MVx.Observable.Command(true);
             _nextCommand = new MVx.Observable.Command(true);
+            _playbackState = new MVx.Observable.Property<PlaybackState>(nameof(PlaybackState), args => PropertyChanged?.Invoke(this, args));
         }
 
         public IDisposable ShouldSubscrbeToCurrentContextOnActivation()
@@ -86,6 +92,23 @@ namespace Unopify.Home
                 .Subscribe(_eventBus.Publish);
         }
 
+        private IDisposable ShouldUpdatePlaybackStateWhenContextChangesOrWhenPlayPauseInvoked()
+        {
+            var playPauseState = _playPauseCommand
+                .WithLatestFrom(_currentTrackContext, (_, context) => context)
+                .Select(context => context?.IsPlaying ?? false ? PlaybackState.Paused : PlaybackState.Playing);
+
+            var contextState = _currentTrackContext
+                .Select(context => context?.IsPlaying ?? false ? PlaybackState.Playing : PlaybackState.Paused);
+
+            return Observable
+                .Merge(playPauseState, contextState)
+                .DistinctUntilChanged()
+                .Do(value => System.Diagnostics.Debug.WriteLine($"Playback state changed: {value}"))
+                .ObserveOn(Platform.Schedulers.Dispatcher)
+                .Subscribe(_playbackState);
+        }
+
         public IDisposable Activate()
         {
             return new CompositeDisposable(
@@ -94,7 +117,8 @@ namespace Unopify.Home
                 ShouldRefreshArtistNameWhenContextChanges(),
                 ShouldPlayOrPauseWhenThePlayPauseCommandIsInvoked(),
                 ShouldSkipToNextTrackWhenNextCommandIsInvoked(),
-                ShouldSkipToPreviousTrackWhenPreviousCommandIsInvoked()
+                ShouldSkipToPreviousTrackWhenPreviousCommandIsInvoked(),
+                ShouldUpdatePlaybackStateWhenContextChangesOrWhenPlayPauseInvoked()
             );
         }
 
@@ -109,5 +133,7 @@ namespace Unopify.Home
         public ICommand PreviousCommand => _previousCommand;
 
         public ICommand NextCommand => _nextCommand;
+
+        public PlaybackState PlaybackState => _playbackState.Get();
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,9 +9,7 @@ using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Windows.Media.Core;
 using Windows.Storage;
 
 namespace Unopify.AuthServer
@@ -142,11 +139,11 @@ namespace Unopify.AuthServer
                 .Publish();
 
             var success = refreshToken
-                .Where(token => token != null)
+                .Where(token => token != null && !string.IsNullOrWhiteSpace(token.Tokens.RefreshToken))
                 .Subscribe(_tokens);
 
             var failure = refreshToken
-                .Where(token => token is null)
+                .Where(token => token is null || string.IsNullOrWhiteSpace(token.Tokens.RefreshToken))
                 .Select(_ => State.PendingAuthentication)
                 .Subscribe(_state);
 
@@ -348,9 +345,9 @@ namespace Unopify.AuthServer
 
             var failure = refreshing
                 .Where(notification => notification.Kind == NotificationKind.OnError)
-                .Select(notification => notification.Exception)
+                .Select(_ => State.PendingAuthentication)
                 .ObserveOn(CoreDispatcherScheduler.Current)
-                .Subscribe(_refreshingTokenException);
+                .Subscribe(_state);
 
             return new CompositeDisposable(success, failure, refreshing.Connect());
         }

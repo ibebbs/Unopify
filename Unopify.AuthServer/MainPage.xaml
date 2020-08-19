@@ -20,6 +20,15 @@
                         <StateTrigger IsActive="{Binding Path=State, Mode=OneWay, Converter={StaticResource StringEqualityConverter}, ConverterParameter=ConnectingToRelay}" />
                     </VisualState.StateTriggers>
                 </VisualState>
+                <VisualState x:Name="CheckingForTokensState">
+                    <VisualState.StateTriggers>
+                        <StateTrigger IsActive="{Binding Path=State, Mode=OneWay, Converter={StaticResource StringEqualityConverter}, ConverterParameter=CheckingForTokens}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="CheckingForTokensGrid.(UIElement.Visibility)" Value="Visible"/>
+                        <Setter Target="ConnectingToRelayGrid.(UIElement.Visibility)" Value="Collapsed"/>
+                    </VisualState.Setters>
+                </VisualState>
                 <VisualState x:Name="PendingAuthenticationState">
                     <VisualState.StateTriggers>
                         <StateTrigger IsActive="{Binding Path=State, Mode=OneWay, Converter={StaticResource StringEqualityConverter}, ConverterParameter=PendingAuthentication}" />
@@ -69,6 +78,9 @@
         </VisualStateManager.VisualStateGroups>
         <Grid x:Name="ConnectingToRelayGrid">
             <TextBlock Text="Connecting To Relay..." Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+        <Grid x:Name="CheckingForTokensGrid" Visibility="Collapsed">
+            <TextBlock Text="Checking for tokens..." Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
         <Grid x:Name="PendingAuthenticationGrid" Visibility="Collapsed">
             <TextBlock Text="Performing Authentication..." Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center"/>

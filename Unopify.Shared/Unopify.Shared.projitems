@@ -59,6 +59,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Spotify\Facade.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Token\Service.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewLocator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Xaml\Converters\StringEqualityConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="$(MSBuildThisFileDirectory)Authenticating\View.xaml">

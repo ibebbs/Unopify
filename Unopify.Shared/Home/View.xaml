@@ -3,12 +3,48 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Unopify.Home"
+    xmlns:converters="using:Unopify.Xaml.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <Page.Resources>
+        <converters:StringEqualityConverter x:Key="StringEqualityConverter"/>
+        <Style x:Key="ChromelessButtonStyle" TargetType="Button" >
+            <Style.Setters>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="Transparent">
+                                <ContentPresenter />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style.Setters>
+        </Style>
+    </Page.Resources>
+
     <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="PlaybackStateGroup">
+                <VisualState x:Name="PlayingState">
+                    <VisualState.StateTriggers>
+                        <StateTrigger IsActive="{Binding Path=PlaybackState, Mode=OneWay, Converter={StaticResource StringEqualityConverter}, ConverterParameter=Playing}" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="PausedState">
+                    <VisualState.StateTriggers>
+                        <StateTrigger IsActive="{Binding Path=PlaybackState, Mode=OneWay, Converter={StaticResource StringEqualityConverter}, ConverterParameter=Paused}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="PlayButton.(UIElement.Visibility)" Value="Visible"/>
+                        <Setter Target="PauseButton.(UIElement.Visibility)" Value="Collapsed"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
         <Image Source="{Binding ImageUri}" Stretch="UniformToFill" Margin="-100"/>
         <Rectangle Fill="#AAFFFFFF" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
         <Grid Margin="16">
@@ -34,10 +70,25 @@
                 </Border>
                 <TextBlock Grid.Row="1" Text="{Binding Path=CurrentTrackContext.Item.Name}" Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="4"/>
                 <TextBlock Grid.Row="2" Text="{Binding Path=ArtistName}" Style="{StaticResource SubtitleTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="4"/>
-                <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="4">
-                    <Button Content="Previous" Command="{Binding Path=PreviousCommand}" Margin="4" />
-                    <Button Content="Play/Pause" Command="{Binding Path=PlayPauseCommand}" Margin="4" />
-                    <Button Content="Next" Command="{Binding Path=NextCommand}" Margin="4" />
+                <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="4" VerticalAlignment="Center">
+                    <Button Command="{Binding Path=PreviousCommand}" Margin="4" Background="Transparent">
+                        <Path Fill="Black" Height="32" Stretch="Uniform" Data="M64 468V44c0-6.6 5.4-12 12-12h48c6.6 0 12 5.4 12 12v176.4l195.5-181C352.1 22.3 384 36.6 384 64v384c0 27.4-31.9 41.7-52.5 24.6L136 292.7V468c0 6.6-5.4 12-12 12H76c-6.6 0-12-5.4-12-12z"/>
+                    </Button>
+                    <Button x:Name="PauseButton" Command="{Binding Path=PlayPauseCommand}" Margin="4" VerticalAlignment="Center" Background="Transparent">
+                        <Grid Width="64" Height="64">
+                            <Ellipse Stroke="Black" StrokeThickness="1"/>
+                            <Path Fill="Black" Stretch="Uniform" HorizontalAlignment="Center" Height="32" Data="M144 479H48c-26.5 0-48-21.5-48-48V79c0-26.5 21.5-48 48-48h96c26.5 0 48 21.5 48 48v352c0 26.5-21.5 48-48 48zm304-48V79c0-26.5-21.5-48-48-48h-96c-26.5 0-48 21.5-48 48v352c0 26.5 21.5 48 48 48h96c26.5 0 48-21.5 48-48z"/>
+                        </Grid>
+                    </Button>
+                    <Button x:Name="PlayButton" Command="{Binding Path=PlayPauseCommand}" Margin="4" Visibility="Collapsed" VerticalAlignment="Center" Background="Transparent">
+                        <Grid Width="64" Height="64">
+                            <Ellipse Stroke="Black" StrokeThickness="1"/>
+                            <Path Fill="Black" Stretch="Uniform" HorizontalAlignment="Center" Height="32" Data="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z"/>
+                        </Grid>
+                    </Button>
+                    <Button Command="{Binding Path=NextCommand}" Margin="4" VerticalAlignment="Center" Background="Transparent">
+                        <Path Fill="Black" Height="32" Stretch="Uniform" Data="M384 44v424c0 6.6-5.4 12-12 12h-48c-6.6 0-12-5.4-12-12V291.6l-195.5 181C95.9 489.7 64 475.4 64 448V64c0-27.4 31.9-41.7 52.5-24.6L312 219.3V44c0-6.6 5.4-12 12-12h48c6.6 0 12 5.4 12 12z"/>
+                    </Button>
                 </StackPanel>
             </Grid>
         </Grid>
