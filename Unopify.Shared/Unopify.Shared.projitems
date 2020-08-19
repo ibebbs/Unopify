@@ -46,9 +46,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Home\ViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IViewAware.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Navigation\Service.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\Schedulers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\Services.cs" />
@@ -62,10 +59,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="$(MSBuildThisFileDirectory)Home\View.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="$(MSBuildThisFileDirectory)MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

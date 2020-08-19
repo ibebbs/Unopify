@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ namespace Unopify.Home
         private readonly Spotify.IFacade _spotifyFacade;
 
         private readonly MVx.Observable.Property<CurrentTrackPlaybackContext> _currentTrackContext;
+        private readonly MVx.Observable.Property<string> _imageUri;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -21,6 +23,7 @@ namespace Unopify.Home
             _spotifyFacade = spotifyFacade;
 
             _currentTrackContext = new MVx.Observable.Property<CurrentTrackPlaybackContext>(nameof(CurrentTrackContext), args => PropertyChanged?.Invoke(this, args));
+            _imageUri = new MVx.Observable.Property<string>(nameof(ImageUri), args => PropertyChanged?.Invoke(this, args));
         }
 
         public IDisposable ShouldSubscrbeToCurrentContextOnActivation()
@@ -32,13 +35,25 @@ namespace Unopify.Home
                 .Subscribe(_currentTrackContext);
         }
 
+        public IDisposable ShouldUpdateImageUriWhenContextChanges()
+        {
+            return _currentTrackContext
+                .Select(context => context?.Item?.Album?.Images?.Select(image => image.Url).FirstOrDefault())
+                .DistinctUntilChanged()
+                .ObserveOn(Platform.Schedulers.Dispatcher)
+                .Subscribe(_imageUri);
+        }
+
         public IDisposable Activate()
         {
             return new CompositeDisposable(
-                ShouldSubscrbeToCurrentContextOnActivation()
+                ShouldSubscrbeToCurrentContextOnActivation(),
+                ShouldUpdateImageUriWhenContextChanges()
             );
         }
 
         public CurrentTrackPlaybackContext CurrentTrackContext => _currentTrackContext.Get();
+
+        public string ImageUri => _imageUri.Get();
     }
 }
