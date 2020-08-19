@@ -37,7 +37,7 @@
                 <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="4">
                     <Button Content="Previous" Command="{Binding Path=PreviousCommand}" Margin="4" />
                     <Button Content="Play/Pause" Command="{Binding Path=PlayPauseCommand}" Margin="4" />
-                    <Button Content="Next" Command="{Binding Path=PlayPauseCommand}" Margin="4" />
+                    <Button Content="Next" Command="{Binding Path=NextCommand}" Margin="4" />
                 </StackPanel>
             </Grid>
         </Grid>

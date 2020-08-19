@@ -19,6 +19,8 @@ namespace Unopify.Home
         private readonly MVx.Observable.Property<string> _imageUri;
         private readonly MVx.Observable.Property<string> _artistName;
         private readonly MVx.Observable.Command _playPauseCommand;
+        private readonly MVx.Observable.Command _previousCommand;
+        private readonly MVx.Observable.Command _nextCommand;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -31,6 +33,8 @@ namespace Unopify.Home
             _imageUri = new MVx.Observable.Property<string>(nameof(ImageUri), args => PropertyChanged?.Invoke(this, args));
             _artistName = new MVx.Observable.Property<string>(nameof(ArtistName), args => PropertyChanged?.Invoke(this, args));
             _playPauseCommand = new MVx.Observable.Command(true);
+            _previousCommand = new MVx.Observable.Command(true);
+            _nextCommand = new MVx.Observable.Command(true);
         }
 
         public IDisposable ShouldSubscrbeToCurrentContextOnActivation()
@@ -68,13 +72,29 @@ namespace Unopify.Home
                 .Subscribe(_eventBus.Publish);
         }
 
+        private IDisposable ShouldSkipToPreviousTrackWhenPreviousCommandIsInvoked()
+        {
+            return _previousCommand
+                .Select(_ => new Application.Events.PreviousTrack())
+                .Subscribe(_eventBus.Publish);
+        }
+
+        private IDisposable ShouldSkipToNextTrackWhenNextCommandIsInvoked()
+        {
+            return _nextCommand
+                .Select(_ => new Application.Events.NextTrack())
+                .Subscribe(_eventBus.Publish);
+        }
+
         public IDisposable Activate()
         {
             return new CompositeDisposable(
                 ShouldSubscrbeToCurrentContextOnActivation(),
                 ShouldUpdateImageUriWhenContextChanges(),
                 ShouldRefreshArtistNameWhenContextChanges(),
-                ShouldPlayOrPauseWhenThePlayPauseCommandIsInvoked()
+                ShouldPlayOrPauseWhenThePlayPauseCommandIsInvoked(),
+                ShouldSkipToNextTrackWhenNextCommandIsInvoked(),
+                ShouldSkipToPreviousTrackWhenPreviousCommandIsInvoked()
             );
         }
 
@@ -85,5 +105,9 @@ namespace Unopify.Home
         public string ArtistName => _artistName.Get();
 
         public ICommand PlayPauseCommand => _playPauseCommand;
+
+        public ICommand PreviousCommand => _previousCommand;
+
+        public ICommand NextCommand => _nextCommand;
     }
 }

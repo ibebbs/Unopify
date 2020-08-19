@@ -58,11 +58,29 @@ namespace Unopify.Spotify
                 .Subscribe(token => _playerApi.Play(accessToken: token));
         }
 
+        private IDisposable ShouldCallNextWhenNextTrackEventReceived()
+        {
+            return _eventBus
+                .GetEvent<Application.Events.NextTrack>()
+                .WithLatestFrom(_tokenService.Token, (_, token) => token)
+                .Subscribe(token => _playerApi.SkipNext(accessToken: token));
+        }
+
+        private IDisposable ShouldCallPreviousWhenPreviousTrackEventReceived()
+        {
+            return _eventBus
+                .GetEvent<Application.Events.PreviousTrack>()
+                .WithLatestFrom(_tokenService.Token, (_, token) => token)
+                .Subscribe(token => _playerApi.SkipPrevious(accessToken: token));
+        }
+
         public IDisposable Activate()
         {
             return new CompositeDisposable(
                 ShouldCallPlayWhenPlayEventReceived(),
                 ShouldCallPauseWhenPauseEventReceived(),
+                ShouldCallPreviousWhenPreviousTrackEventReceived(),
+                ShouldCallNextWhenNextTrackEventReceived(),
                 _context.Connect()
             );
         }
