@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>6279c845-92f8-4333-ab99-3d213163593c</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Unopify</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="$(MSBuildThisFileDirectory)App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </ApplicationDefinition>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Application\Events\BackPressed.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\Events\PlaybackStateChanged.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\Events\TokenReceived.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\IState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\State\Factory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\State\Initializing.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\State\ITransition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\State\Launching.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\State\Machine.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\State\Resuming.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\State\Transition\ToAuthenticating.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\State\Transition\ToHome.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\State\Transition\ToInitializing.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\State\Transition\ToLaunching.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Application\State\Transition\ToResuming.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Authenticating\State.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Authenticating\View.xaml.cs">
+      <DependentUpon>View.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Authenticating\ViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Event\Bus.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Home\State.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Home\View.xaml.cs">
+      <DependentUpon>View.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Home\ViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IViewAware.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\Service.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Platform\Schedulers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Platform\Services.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Spotify\Facade.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Token\Service.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewLocator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="$(MSBuildThisFileDirectory)Authenticating\View.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Home\View.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Assets\SharedAssets.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="$(MSBuildThisFileDirectory)Strings\en\Resources.resw" />
+  </ItemGroup>
+</Project>

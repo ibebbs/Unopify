@@ -1,0 +1,89 @@
+﻿<Page
+    x:Class="Unopify.AuthServer.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Unopify.AuthServer"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <local:StringEqualityConverter x:Key="StringEqualityConverter" />
+    </Page.Resources>
+    
+    <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="StateGroup">
+                <VisualState x:Name="ConnectingToRelayState">
+                    <VisualState.StateTriggers>
+                        <StateTrigger IsActive="{Binding Path=State, Mode=OneWay, Converter={StaticResource StringEqualityConverter}, ConverterParameter=ConnectingToRelay}" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="PendingAuthenticationState">
+                    <VisualState.StateTriggers>
+                        <StateTrigger IsActive="{Binding Path=State, Mode=OneWay, Converter={StaticResource StringEqualityConverter}, ConverterParameter=PendingAuthentication}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="PendingAuthenticationGrid.(UIElement.Visibility)" Value="Visible"/>
+                        <Setter Target="ConnectingToRelayGrid.(UIElement.Visibility)" Value="Collapsed"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="CodeExchangeState">
+                    <VisualState.StateTriggers>
+                        <StateTrigger IsActive="{Binding Path=State, Mode=OneWay, Converter={StaticResource StringEqualityConverter}, ConverterParameter=CodeExchange}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="CodeExchangeGrid.(UIElement.Visibility)" Value="Visible"/>
+                        <Setter Target="ConnectingToRelayGrid.(UIElement.Visibility)" Value="Collapsed"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="PublishingTokenState">
+                    <VisualState.StateTriggers>
+                        <StateTrigger IsActive="{Binding Path=State, Mode=OneWay, Converter={StaticResource StringEqualityConverter}, ConverterParameter=PublishingToken}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="PublishingTokenGrid.(UIElement.Visibility)" Value="Visible"/>
+                        <Setter Target="ConnectingToRelayGrid.(UIElement.Visibility)" Value="Collapsed"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="TokenPublishedState">
+                    <VisualState.StateTriggers>
+                        <StateTrigger IsActive="{Binding Path=State, Mode=OneWay, Converter={StaticResource StringEqualityConverter}, ConverterParameter=TokenPublished}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="TokenPublishedGrid.(UIElement.Visibility)" Value="Visible"/>
+                        <Setter Target="ConnectingToRelayGrid.(UIElement.Visibility)" Value="Collapsed"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="RefreshingTokenState">
+                    <VisualState.StateTriggers>
+                        <StateTrigger IsActive="{Binding Path=State, Mode=OneWay, Converter={StaticResource StringEqualityConverter}, ConverterParameter=RefreshingToken}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="RefreshingTokenGrid.(UIElement.Visibility)" Value="Visible"/>
+                        <Setter Target="ConnectingToRelayGrid.(UIElement.Visibility)" Value="Collapsed"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <Grid x:Name="ConnectingToRelayGrid">
+            <TextBlock Text="Connecting To Relay..." Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+        <Grid x:Name="PendingAuthenticationGrid" Visibility="Collapsed">
+            <TextBlock Text="Performing Authentication..." Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+        <Grid x:Name="CodeExchangeGrid" Visibility="Collapsed">
+            <TextBlock Text="Performing Code Exchange..." Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+        <Grid x:Name="PublishingTokenGrid" Visibility="Collapsed">
+            <TextBlock Text="Publishing Token..." Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+        <Grid x:Name="TokenPublishedGrid" Visibility="Collapsed">
+            <TextBlock Text="Token published. Waiting for expiry." Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+        <Grid x:Name="RefreshingTokenGrid" Visibility="Collapsed">
+            <TextBlock Text="Refreshing Token..." Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+    </Grid>
+</Page>
